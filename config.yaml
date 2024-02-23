@@ -3,4 +3,4 @@ SAMPLE_ID:
   - D17-8753
   - D17-8754
   - D17-8755
-KEEP_BAMS: "yes" #"no"
+KEEP_BAMS: "no"
