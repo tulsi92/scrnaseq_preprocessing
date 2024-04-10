@@ -1,15 +1,13 @@
-# cellranger_count
-Snakemake pipeline to run CellRanger count step for FASTQ files from 10x Genomics scRNA-seq. Each sample will be submitted as a job to run simultaneously.
+# pipseeker
+Snakemake pipeline to run pipseeker alignment and counting step for FASTQ files from PIP-seq scRNA-seq data. Each sample will be submitted as a job to run simultaneously.
 
 Input:
 
 **config.yaml**
-* FASTQ_DIR - path to folder where fastq files are located
+* STAR_INDEX_PATH - path to STAR aligner index file
 * SAMPLE_ID - list sample IDs (must match name prefix in fastq files e.g. <sample1>_S1_L001_R1_001.fastq.gz)
-* KEEP_BAMS - whether to keep large intermediate BAM files for other analyses (default: no)
+* CHEMISTRY_VERSION - version of chemistry used - v4 or v5
 
 How to run:
 
 ```snakemake --profile lsf```
-
-https://www.10xgenomics.com/support/software/cell-ranger/latest/analysis/running-pipelines/cr-gex-count
