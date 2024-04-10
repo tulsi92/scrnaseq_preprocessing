@@ -1,6 +1,5 @@
-FASTQ_DIR: "/sc/arion/projects/load/data-ext/single_cell/2022-10-31_dataset_snrna/raw/"
+STAR_INDEX_PATH: "/sc/arion/projects/load/path/to/star/index/"
+CHEMISTRY_VERSION: "v4"
 SAMPLE_ID:
   - D17-8753
   - D17-8754
-  - D17-8755
-KEEP_BAMS: "no"
