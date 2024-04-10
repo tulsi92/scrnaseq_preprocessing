@@ -2,45 +2,41 @@ import os
 import glob
 import pandas as pd
 
-## Pipeline to generate 10x single cell RNAseq gene count files from FASTQ using CellRanger
+## Pipeline to generate single cell RNAseq gene count files from FASTQ using pipseeker
 
 # snakemake --dag | dot -Tpdf > dag.pdf
 configfile: "config.yaml"
 
-SAMPLE_ID = config["SAMPLE_ID"]
-FASTQ_DIR = config["FASTQ_DIR"]
-TRANSCRIPTOME_REF = "/sc/arion/projects/load/users/patelt16/references/GRCh38"
+## pipseeker params
+PIPSEEKER = "path/to/pipseeker"
+STAR_INDEX_PATH = config["STAR_INDEX_PATH"]
+CHEMISTRY_VERSION = config["CHEMISTRY_VERSION"]
 
 localrules: main
 
 rule main:
     input:
-        expand("processed/{sample_id}.log", sample_id = SAMPLE_ID)
+        expand("output/{sample_id}/{sample_id}.log", sample_id = SAMPLE_ID)
 
-def keep_bam_files(wc):
-    if config["KEEP_BAMS"] == "no":
-        return "--no-bam"
-    else:
-        return ""
-
-rule cellranger_count:
-    output: "processed/{sample_id}.log"
+## To run pipseeker
+rule pipseeker_run:
+    output: 
+        output_log = "processed/{sample_id}/{sample_id}.log"
+        output_path = "output/{sample_id}"
     params:
-        fastq = FASTQ_DIR,
-        transcriptome_ref = TRANSCRIPTOME_REF,
-        keep_bams = keep_bam_files
+        star_index_path = STAR_INDEX_PATH,
+        chemistry_version = CHEMISTRY_VERSION
     resources:
-        mem_mb = 8000,
-        walltime = "10:00"
+        mem_mb = 12000,
+        walltime = "100:00"
     threads: 8
-    # conda: "envs/cellranger.yaml"
+    # conda: "envs/pipseeker.yaml"
     shell:
         """
-        ml cellranger
-        cellranger count --id={wildcards.sample_id} \
-                    --transcriptome={params.transcriptome_ref} \
-                    --fastqs={params.fastq} \
-                    --sample={wildcards.sample_id} \
-                    --include-introns=true {params.keep_bams}
-        touch {output}
+        {PIPSEEKER} full \
+                    --fastq {wildcards.sample_id} \
+                    --star-index-path {params.star_index_path} \
+                    --chemistry {params.chemistry_version} \
+                    --output-path {output.output_path}
+        touch {output.output_log}
 		"""
