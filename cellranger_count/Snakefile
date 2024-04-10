@@ -1,0 +1,48 @@
+import os
+import glob
+import pandas as pd
+
+## Pipeline to generate 10x single cell RNAseq gene count files from FASTQ using CellRanger
+
+# snakemake --dag | dot -Tpdf > dag.pdf
+configfile: "config.yaml"
+
+## cellranger params
+SAMPLE_ID = config["SAMPLE_ID"]
+FASTQ_DIR = config["FASTQ_DIR"]
+TRANSCRIPTOME_REF = "/sc/arion/projects/load/users/patelt16/references/GRCh38"
+
+localrules: main
+
+rule main:
+    input:
+        expand("processed/{sample_id}.log", sample_id = SAMPLE_ID)
+
+## To run cellranger
+def keep_bam_files(wc):
+    if config["KEEP_BAMS"] == "no":
+        return "--no-bam"
+    else:
+        return ""
+
+rule cellranger_count:
+    output: "processed/{sample_id}.log"
+    params:
+        fastq = FASTQ_DIR,
+        transcriptome_ref = TRANSCRIPTOME_REF,
+        keep_bams = keep_bam_files
+    resources:
+        mem_mb = 64000,
+        runtime = "100h"
+    threads: 8
+    # conda: "envs/cellranger.yaml"
+    shell:
+        """
+        ml cellranger
+        cellranger count --id={wildcards.sample_id} \
+                    --transcriptome={params.transcriptome_ref} \
+                    --fastqs={params.fastq} \
+                    --sample={wildcards.sample_id} \
+                    --include-introns=true {params.keep_bams}
+        touch {output}
+		"""
