@@ -1,3 +1,4 @@
+TRANSCRIPTOME_REF: "/sc/arion/projects/load/users/patelt16/references/GRCh38"
 FASTQ_DIR: "/sc/arion/projects/load/data-ext/single_cell/2022-10-31_dataset_snrna/raw/"
 SAMPLE_ID:
   - D17-8753

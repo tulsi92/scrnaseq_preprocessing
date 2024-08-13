@@ -1,42 +1,43 @@
+## Pipeline to generate single cell RNAseq gene count files from FASTQ using pipseeker
+
 import os
 import glob
 import pandas as pd
-
-## Pipeline to generate single cell RNAseq gene count files from FASTQ using pipseeker
 
 # snakemake --dag | dot -Tpdf > dag.pdf
 configfile: "config.yaml"
 
 ## pipseeker params
-PIPSEEKER = "path/to/pipseeker"
+PIPSEEKER = "path/to/pipseeker/executable"
 STAR_INDEX_PATH = config["STAR_INDEX_PATH"]
 CHEMISTRY_VERSION = config["CHEMISTRY_VERSION"]
+SAMPLE_ID = config["SAMPLE_ID"]
 
 localrules: main
 
 rule main:
     input:
-        expand("processed/{sample_id}/{sample_id}.log", sample_id = SAMPLE_ID)
+        expand("processed/{sample_id}.log", sample_id = SAMPLE_ID)
 
 ## To run pipseeker
 rule pipseeker_run:
     output: 
-        output_log = "processed/{sample_id}/{sample_id}.log"
-        output_path = "processed/{sample_id}"
+        output_log = "processed/{sample_id}.log",
     params:
         star_index_path = STAR_INDEX_PATH,
-        chemistry_version = CHEMISTRY_VERSION
+        chemistry_version = CHEMISTRY_VERSION,
+        output_path = "processed"
     resources:
         mem_mb = 64000,
         runtime = "100h"
     threads: 8
-    # conda: "envs/pipseeker.yaml"
+    # container: "public.ecr.aws/w3e1n2j6/fluent-pipseeker:3.3.0"
     shell:
         """
         {PIPSEEKER} full \
                     --fastq {wildcards.sample_id} \
                     --star-index-path {params.star_index_path} \
                     --chemistry {params.chemistry_version} \
-                    --output-path {output.output_path}
+                    --output-path {params.output_path}
         touch {output.output_log}
 		"""
