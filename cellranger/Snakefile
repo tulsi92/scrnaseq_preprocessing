@@ -10,7 +10,7 @@ configfile: "config.yaml"
 ## cellranger params
 SAMPLE_ID = config["SAMPLE_ID"]
 FASTQ_DIR = config["FASTQ_DIR"]
-TRANSCRIPTOME_REF = "/sc/arion/projects/load/users/patelt16/references/GRCh38"
+TRANSCRIPTOME_REF = config["TRANSCRIPTOME_REF"]
 
 localrules: main
 
