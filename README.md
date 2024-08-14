@@ -15,6 +15,6 @@ Pipseeker Input:
 * SAMPLE_ID - list sample IDs (must match name prefix in fastq files e.g. <sample1>_S1_L001_R1_001.fastq.gz)
 * CHEMISTRY_VERSION - chemistry version v4 or v5
 
-How to run from respective folders:
+How to run in respective folders:
 
 ```snakemake --profile lsf```
