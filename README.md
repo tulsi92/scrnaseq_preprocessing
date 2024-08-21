@@ -1,4 +1,4 @@
-# Processing of scRNAseq FASTQ - alignment and counting
+# Processing of scRNAseq FASTQ
 Snakemake pipeline to process FASTQ files from 10x Genomics using CellRanger or PIP-seq data using pipseeker. Each sample will be submitted as a single job to run simultaneously.
 
 Cellranger Input:
