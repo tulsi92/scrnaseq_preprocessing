@@ -18,3 +18,6 @@ Pipseeker Input:
 How to run in respective folders:
 
 ```snakemake --profile lsf```
+
+Pending:
+* Merge pipelines into one and add input functions to decide which tool to run
