@@ -8,7 +8,7 @@ import pandas as pd
 configfile: "config.yaml"
 
 ## pipseeker params
-PIPSEEKER = "path/to/pipseeker/executable"
+PIPSEEKER = "/path/to/pipseeker/executable"
 STAR_INDEX_PATH = config["STAR_INDEX_PATH"]
 CHEMISTRY_VERSION = config["CHEMISTRY_VERSION"]
 SAMPLE_ID = config["SAMPLE_ID"]
