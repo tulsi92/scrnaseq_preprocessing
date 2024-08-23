@@ -1,7 +1,7 @@
-STAR_INDEX_PATH: "/sc/arion/projects/load/resources/references/pipseeker-gex-reference-GRCh38-2022.04"
+STAR_INDEX_PATH: "/path/references/pipseeker-gex-reference-GRCh38-2022.04"
 CHEMISTRY_VERSION: "v4"
 SAMPLE_ID:
-  - WT1
-  - WT2
-  - KO1
-  - KO2
+  - sample1
+  - sample2
+  - sample3
+  - sample4
