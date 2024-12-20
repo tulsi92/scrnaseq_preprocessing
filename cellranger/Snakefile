@@ -35,7 +35,7 @@ rule cellranger_count:
         mem_mb = 64000,
         runtime = "100h"
     threads: 8
-    # conda: "envs/cellranger.yaml"
+    conda: "envs/cellranger.yaml"
     shell:
         """
         ml cellranger
