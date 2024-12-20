@@ -19,7 +19,7 @@ rule main:
         expand("processed/{sample_id}.log", sample_id = SAMPLE_ID)
 
 ## To run cellranger
-def keep_bam_files(wc):
+def create_bam_files(wc):
     if config["KEEP_BAMS"] == "no":
         return "--no-bam"
     else:
