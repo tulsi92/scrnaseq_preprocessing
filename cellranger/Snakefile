@@ -30,7 +30,7 @@ rule cellranger_count:
     params:
         fastq = FASTQ_DIR,
         transcriptome_ref = TRANSCRIPTOME_REF,
-        keep_bams = keep_bam_files
+        create_bams = create_bam_files
     resources:
         mem_mb = 64000,
         runtime = "100h"
