@@ -1,23 +1,97 @@
-# Processing of scRNAseq FASTQ
-Snakemake pipeline to process FASTQ files from 10x Genomics using CellRanger or PIP-seq data using pipseeker. Each sample will be submitted as a single job to run simultaneously.
+# scRNA-seq FASTQ Processing
 
-Cellranger Input:
-**config.yaml**
-* FASTQ_DIR - path to folder where fastq files are located
-* SAMPLE_ID - list sample IDs (must match name prefix in fastq files e.g. <sample1>_S1_L001_R1_001.fastq.gz)
-* KEEP_BAMS - whether to keep large intermediate BAM files for other analyses (default: no)
+This repository contains Snakemake workflows for generating gene expression count matrices from single-cell RNA-sequencing (scRNA-seq) FASTQ files.
 
-https://www.10xgenomics.com/support/software/cell-ranger/latest/analysis/running-pipelines/cr-gex-count
+Currently, two processing pipelines are supported:
 
-Pipseeker Input:
-**config.yaml**
-* STAR_INDEX_PATH - path to STAR aligner index file
-* SAMPLE_ID - list sample IDs (must match name prefix in fastq files e.g. <sample1>_S1_L001_R1_001.fastq.gz)
-* CHEMISTRY_VERSION - chemistry version v4 or v5
+- **Cell Ranger** for standard 10x Genomics scRNA-seq data
+- **PIPseeker** for PIP-seq datasets
 
-How to run in respective folders:
+Each sample is processed independently, allowing jobs to be run in parallel on an HPC cluster.
 
-```snakemake --profile lsf```
+## Repository structure
 
-Pending:
-* Merge pipelines into one and add input functions to decide which tool to run
+| Folder | Analysis | Key inputs | Key outputs |
+|--------|----------|------------|-------------|
+| `cellranger/` | 10x Genomics Cell Ranger pipeline | FASTQ files, Cell Ranger reference transcriptome | Filtered feature-barcode matrices, QC metrics, Cell Ranger outputs |
+| `pipseeker/` | PIP-seq processing pipeline | FASTQ files, STAR reference index | Gene count matrices and PIP-seq outputs |
+
+Each module contains:
+
+- Detailed `README.md`
+- Snakemake workflow
+- Required Conda environment
+- Analysis-specific configuration
+
+## Workflow overview
+
+The pipelines perform the following steps:
+
+1. Read sample information from the configuration file
+2. Process each sample independently
+3. Align sequencing reads
+4. Quantify gene expression
+5. Generate count matrices and quality control outputs
+
+## Supported analyses
+
+| Pipeline | Description |
+|----------|-------------|
+| **Cell Ranger** | Alignment, barcode correction, UMI counting, and gene expression quantification for 10x Genomics scRNA-seq data. |
+| **PIPseeker** | Alignment and count matrix generation for PIP-seq datasets using STAR. |
+
+## Prerequisites
+
+### Input data
+
+Required inputs include:
+
+- Demultiplexed FASTQ files
+- Reference transcriptome (Cell Ranger) or STAR genome index (PIP-seq)
+
+### Software
+
+Depending on the workflow:
+
+- Cell Ranger
+- STAR
+- Snakemake
+
+Conda environments are provided where applicable.
+
+## Configuration
+
+Each workflow is configured through `config.yaml`.
+
+Typical parameters include:
+
+- sample IDs
+- FASTQ directory
+- reference transcriptome or STAR index
+- chemistry version (PIP-seq)
+- whether BAM files should be retained (Cell Ranger)
+
+Update any environment-specific paths before running the workflow.
+
+## Running the pipeline
+
+```bash
+# Dry run
+snakemake -np
+
+# Run the full workflow
+snakemake --profile lsf
+
+# Run to a specific rule
+snakemake --profile lsf --until <rule_name>
+```
+
+## Outputs
+
+Depending on the workflow, outputs include:
+
+- Gene count matrices
+- Filtered feature-barcode matrices
+- Alignment files (optional)
+- Cell Ranger or PIP-seq summary metrics
+- Processing logs
