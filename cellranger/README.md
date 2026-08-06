@@ -24,7 +24,6 @@ Required inputs include:
 The workflow is implemented in Snakemake and requires:
 
 - Cell Ranger
-- Snakemake
 
 ## Configuration
 
