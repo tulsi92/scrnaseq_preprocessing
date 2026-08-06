@@ -55,7 +55,7 @@ Depending on the workflow:
 
 - Cell Ranger
 - STAR
-- Snakemake
+- pipseeker
 
 Conda environments are provided where applicable.
 
@@ -65,11 +65,11 @@ Each workflow is configured through `config.yaml`.
 
 Typical parameters include:
 
-- sample IDs
+- Sample IDs
 - FASTQ directory
-- reference transcriptome or STAR index
-- chemistry version (PIP-seq)
-- whether BAM files should be retained (Cell Ranger)
+- Reference transcriptome or STAR index
+- Chemistry version (PIP-seq)
+- Whether BAM files should be retained (Cell Ranger)
 
 Update any environment-specific paths before running the workflow.
 
