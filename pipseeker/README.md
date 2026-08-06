@@ -25,7 +25,6 @@ The workflow is implemented in Snakemake and requires:
 
 - PIPseeker
 - STAR
-- Snakemake
 
 A container can also be used (currently commented in the workflow).
 
